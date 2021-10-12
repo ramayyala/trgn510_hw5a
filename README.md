@@ -1,3 +1,6 @@
+# Load Covid Data In
+
+
 ```python
 import requests
 import pandas as pd
@@ -146,7 +149,7 @@ sns.relplot(data=covid,x="Lat",y="Lon",hue="Deaths",size="Confirmed",sizes=(40,4
 
 
     
-![png](Homework_5A_files/Homework_5A_3_1.png)
+![png](Homework_5A_files/Homework_5A_4_1.png)
     
 
 
@@ -161,6 +164,8 @@ covid['Lat'][0]
     '18.35'
 
 
+
+# Convert Latitude and Longitude to Float16
 
 
 ```python
@@ -212,7 +217,7 @@ sns.relplot(data=covid,x="Lon",y="Lat",hue="Deaths",size="Confirmed",sizes=(40,4
 
 
     
-![png](Homework_5A_files/Homework_5A_7_1.png)
+![png](Homework_5A_files/Homework_5A_9_1.png)
     
 
 
@@ -223,9 +228,11 @@ figs=sns.relplot(data=covid,x="Lon",y="Lat", hue="Deaths", size="Confirmed",size
 
 
     
-![png](Homework_5A_files/Homework_5A_8_0.png)
+![png](Homework_5A_files/Homework_5A_10_0.png)
     
 
+
+# Load in Hospital Data
 
 
 ```python
@@ -406,6 +413,8 @@ hospitals.head()
 
 
 
+## Make State_County Column
+
 
 ```python
 hospitals['state_county']=hospitals['state']+'_'+hospitals['county']
@@ -584,6 +593,8 @@ hospitals.head()
 
 
 
+## Create Hospital Info Per County Dataframe 
+
 
 ```python
 HospitalInfoPerCounty=hospitals.groupby(['state_county'], as_index=False)['hospital_bed_count'].agg('sum')
@@ -682,6 +693,8 @@ hospitals.info()
     dtypes: object(22)
     memory usage: 581.1+ KB
 
+
+## Convert Hospital Bed Count to Float16 and then Recreate Hospital Info Per County Dataframe
 
 
 ```python
@@ -809,6 +822,8 @@ HospitalInfoPerCounty.head(5)
 </div>
 
 
+
+# Get New Covid Dataset
 
 
 ```python
@@ -967,6 +982,8 @@ covid.head()
 </div>
 
 
+
+## Converting states to a two letter code using a dictionary
 
 
 ```python
@@ -1295,6 +1312,8 @@ covid.head()
 
 
 
+**Creating a dataframe with unique CovidPerCount**
+
 
 ```python
 CovidPerCounty=covid.groupby(['state_county'], as_index=False).agg({'deaths':'sum','confirmed':'sum','population':'sum','confirmed_daily':'mean','deaths_daily':'mean'})
@@ -1472,6 +1491,8 @@ CovidPerCounty.head(15)
 
 
 
+**Creating Mortality Column**
+
 
 ```python
 CovidPerCounty['mortality']=CovidPerCounty['deaths']/CovidPerCounty['confirmed']
@@ -1565,10 +1586,7 @@ CovidPerCounty.head(5)
 
 
 
-
-```python
-
-```
+**Replace NaN Values in Mortality with 0s**
 
 
 ```python
@@ -1663,6 +1681,8 @@ CovidPerCounty.head(5)
 </div>
 
 
+
+**Join HospitalInfoPerCounty and CovidPerCounty by state_county**
 
 
 ```python
@@ -1765,6 +1785,8 @@ Hospital_Covid_PerCounty.head()
 </div>
 
 
+
+**Create a People Per Bed Variable**
 
 
 ```python
@@ -1871,6 +1893,8 @@ Hospital_Covid_PerCounty.head()
 
 
 
+**PEOPLE PER HOSPITAL BED VS. MORTALITY PLOT**
+
 
 ```python
 sns.set_theme(style="ticks")
@@ -1886,6 +1910,6 @@ sns.relplot(data=Hospital_Covid_PerCounty,x="people_per_bed",y="mortality",hue="
 
 
     
-![png](Homework_5A_files/Homework_5A_25_1.png)
+![png](Homework_5A_files/Homework_5A_38_1.png)
     
 
